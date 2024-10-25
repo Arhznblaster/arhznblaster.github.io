@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="tabTitle">arhan's cloaker</title> <!-- Tab title set to Arhan's Cloaker -->
+
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- JetBrains Mono Font -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace; /* Change font to JetBrains Mono */
+      background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(30, 30, 30, 1) 50%, rgba(0, 0, 0, 1) 100%);
+      backdrop-filter: blur(20px); /* Adds a frosted glass effect */
+    }
+
+    /* Blobs with a soft dark glow */
+    .blob {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: moveBlobs 10s infinite ease-in-out;
+      box-shadow: 0 0 60px rgba(255, 255, 255, 0.2); /* Darker glow */
+      filter: blur(10px); /* Softer edges */
+    }
+
+    .blob:nth-child(2) {
+      background: rgba(255, 255, 255, 0.15);
+      width: 600px;
+      height: 600px;
+      left: 70%;
+      top: 20%;
+      box-shadow: 0 0 80px rgba(255, 255, 255, 0.3); /* Darker glow */
+      animation: moveBlobs 12s infinite ease-in-out;
+    }
+
+    .blob:nth-child(3) {
+      background: rgba(255, 255, 255, 0.1);
+      width: 400px;
+      height: 400px;
+      left: 30%;
+      top: 60%;
+      box-shadow: 0 0 60px rgba(255, 255, 255, 0.2); /* Darker glow */
+      animation: moveBlobs 14s infinite ease-in-out;
+    }
+
+    @keyframes moveBlobs {
+      0%, 100% { transform: scale(1) translate(0, 0); }
+      50% { transform: scale(1.1) translate(50px, -30px); }
+    }
+
+    .centered-content {
+      height: 100vh;
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+      justify-content: center;
+      align-items: center;
+      text-align: center; /* Center text */
+      color: white; /* Keep text color white for visibility */
+    }
+
+    input {
+      border-radius: 0.25rem;
+      border: 1px solid #ced4da;
+      padding: 0.5rem;
+      font-size: 1rem; /* Adjust font size */
+      width: 300px; /* Set a fixed width for the textbox */
+      margin-bottom: 20px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white; /* Keeps input text color white for visibility */
+    }
+
+    button {
+      background-color: #6c757d; /* Set button color to gray */
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      margin-bottom: 10px; /* Add margin below button */
+    }
+
+    button:hover {
+      background-color: #5a6268; /* Darker gray on hover */
+    }
+
+    .credits {
+      font-size: 0.9rem; /* Smaller font for credits */
+      color: rgba(255, 255, 255, 0.7); /* Light gray color */
+    }
+
+    /* Notification Bubble Styles */
+    .notification {
+      position: fixed;
+      bottom: 80px; /* Adjust position above the progress bar */
+      right: 20px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      border-radius: 5px;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      display: none; /* Hidden by default */
+      z-index: 1000; /* Ensure it's above other elements */
+      transform: translateX(100%); /* Start off-screen */
+      transition: transform 0.5s ease; /* Slide in effect */
+    }
+
+    .notification.show {
+      display: block; /* Show notification */
+      transform: translateX(0); /* Slide into view */
+    }
+
+    .notification h4 {
+      margin: 0 0 5px;
+      font-size: 1.1rem;
+    }
+
+    .notification p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .notification .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-color: yellow; /* Warning icon color */
+      border-radius: 50%;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    /* Progress Bar Styles */
+    .progress {
+      position: fixed;
+      bottom: 50px; /* Adjust position for the progress bar */
+      right: 20px;
+      width: 200px; /* Fixed width for the progress bar */
+      height: 5px;
+      background-color: rgba(128, 128, 128, 0.5); /* Gray background for the progress bar */
+      border-radius: 5px;
+      overflow: hidden;
+      display: none; /* Hidden by default */
+      z-index: 1000; /* Ensure it's above other elements */
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: #007bff; /* Blue color for the fill */
+      width: 0; /* Start with no fill */
+      transition: width 3.5s linear; /* Smooth transition */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background">
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 centered-content">
+        <h2>about:blank cloaker</h2>
+        <input type="text" id="urlInput" placeholder="Enter a website link">
+        <button id="goButton">Go</button>
+        <div class="credits">Made with love by Arhan, with bootstrap.</div> <!-- Credits text -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Bubble -->
+  <div class="notification" id="notification">
+    <div class="icon"></div>
+    <h4>Invalid URL</h4>
+    <p>Please enter a valid URL.</p>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress" id="progressBar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <!-- Bootstrap JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- Custom JS -->
+  <script>
+    document.getElementById('goButton').onclick = function() {
+      var urlInput = document.getElementById('urlInput').value;
+
+      // Add protocol if missing
+      if (!/^https?:\/\//i.test(urlInput)) {
+        urlInput = 'http://' + urlInput; // Default to HTTP
+      }
+
+      // Validate URL
+      try {
+        var urlObj = new URL(urlInput); // This will throw an error if invalid
+        var url = urlObj.href;
+
+        var win;
+        if (win) {
+          win.focus();
+        } else {
+          win = window.open();
+          win.document.body.style.margin = '0';
+          win.document.body.style.height = '100vh';
+          var iframe = win.document.createElement('iframe');
+          iframe.style.border = 'none';
+          iframe.style.width = '100%';
+          iframe.style.height = '100%';
+          iframe.style.margin = '0';
+          iframe.src = url;
+          win.document.body.appendChild(iframe);
+        }
+
+        // Show progress bar
+        var progressBar = document.getElementById('progressBar');
+        var progressFill = document.getElementById('progressFill');
+        progressBar.style.display = 'block'; // Show progress bar
+        progressFill.style.width = '100%'; // Fill the progress bar
+
+        // Hide progress bar after duration
+        setTimeout(function() {
+          progressBar.style.display = 'none'; // Hide progress bar
+          progressFill.style.width = '0'; // Reset progress fill
+        }, 3500); // Duration matches the transition time
+
+      } catch (e) {
+        // Show notification for invalid URL
+        var notification = document.getElementById('notification');
+        notification.classList.add('show');
+        setTimeout(function() {
+          notification.classList.remove('show');
+        }, 3000); // Hide after 3 seconds
+      }
+    };
+  </script>
+</body>
+</html>
+
